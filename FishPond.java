@@ -9,8 +9,8 @@ import java.util.stream.Collectors;
  */
 public class FishPond {
     double population;
-    private final double targetPopulation;
-    private double growthFactor;
+    public double targetPopulation;
+    public double growthFactor;
 
     public FishPond(double startPopulation, double targetPopulation) {
         this(startPopulation,targetPopulation, 0.0005);
@@ -32,15 +32,16 @@ public class FishPond {
         }
 
         population -= amounts;
+        repopulate(1);
     }
 
     public void repopulate(double time){
         double rand = Math.random()*2;
 
         double newPopulation  = targetPopulation / (1 + Math.exp(-growthFactor*rand * targetPopulation * time) * (targetPopulation/population-1));
-        population = newPopulation;
+        population = Math.round(newPopulation);
     }
     public double getPopulation() {
-    	return population;
+      return population;
     }
 }

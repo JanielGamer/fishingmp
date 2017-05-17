@@ -17,12 +17,13 @@ public class FishServerThread extends Thread {
 
     static int playerCount = 0;
 
-    public FishServerThread(Socket accept, FishServer server) {
+    public FishServerThread(Socket accept, FishServer server, Player player) {
         super("FishServerThread");
         this.socket = accept;
         this.server = server;
-        this.player = new Player("Player "+playerCount++, 100, 0);
+        this.player = player;
         server.playerCount++;
+        FishServerThread.playerCount++;
     }
     public double getMaxFishPercentage() {
     	return 50/playerCount;
@@ -51,7 +52,7 @@ public class FishServerThread extends Thread {
         	
         	player.name = in.readLine();
         	this.setName(player.name);
-        	System.out.println(this.getName() + " has joined the game!");
+        	System.out.println("[SERVER/THREAD/PLAYERS]: " + this.getName() + " has joined the game!");
         	
             String inputLine ="";
             while ((inputLine=in.readLine())!= null) {
@@ -99,7 +100,7 @@ public class FishServerThread extends Thread {
                         	out.write("You are not allowed to fish more than " + getMaxFishPercentage() +" % or less then 0%!\n");
                         
                 		}else{
-                			out.write("OK\n");
+                			out.write("Your percentace has been accepted!\n");
                 			server.addFishing(player, (amount/100));
                         }
                         out.flush();
@@ -111,13 +112,16 @@ public class FishServerThread extends Thread {
                     case STATS:
                     	out.write(player.name +": \n\n");
                     	out.flush();
-                    	out.write("Price: " + server.market1.getPrice() + "\t" + "Population: " + server.pond.getPopulation() + "\n" + "Money: " + player.getCash() + "\t" + "Player: " + playerCount + "\tMax. %" + getMaxFishPercentage() + "\n");
+                    	double price = FishServer.market1.getPrice()*100;
+                    	price = Math.round(price);
+                    	price /=100;
+                    	out.write("Price: " + price + "\t" + "Population: " + FishServer.pond.getPopulation() + "\n" + "Money: " + player.getCash() + "\t" + "Fish: "+ player.fish + "\tPlayer: " + playerCount + "\tMax. %: " + getMaxFishPercentage() + "\n");
                     	out.flush();
                     	break;
                     case leave:
                     	playerCount--;
                     	server.playerCount--;
-                    	System.out.println(player.name + " has left the game!");
+                    	System.out.println("[SERVER/THREAD/PLAYERS]: " + player.name + " has left the game!");
                     	interrupt();
                     default:
                         out.write("Action not yet implemented");
@@ -126,10 +130,10 @@ public class FishServerThread extends Thread {
                 
             }
         } catch (SocketException e) {
-        	server.playerCount--;
+        	FishServer.playerCount--;
         	playerCount--;
         	interrupt();
-        	System.out.println(player.name + " disconnected!");
+        	System.out.println("[SERVER/THREAD/PLAYERS]: " + player.name + " disconnected!");
            
         } catch (IOException e) {
             e.printStackTrace();
