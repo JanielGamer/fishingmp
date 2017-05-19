@@ -7,5 +7,9 @@ public enum PossibleActions {
     BUY,
     FISH,
     STATS,
+    SAY,
+    RESET,
+    PAUSE,
+    UNPAUSE,
     leave
 }
