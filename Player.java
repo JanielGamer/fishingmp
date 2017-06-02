@@ -12,8 +12,9 @@ public class Player {
     String name;
     double cash;
     double fish;
+    String pwd;
     
     public double getCash() {
-    	return cash;
+      return cash;
     }
 }

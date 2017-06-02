@@ -25,6 +25,7 @@ public class Market {
 
         requestRate += changePlayerInfluence * Math.sqrt(amount) / 100;
 
+        calculatedPrice = Math.round(calculatedPrice*100)/100;
         player.cash -= calculatedPrice;
         player.fish += amount;
         return calculatedPrice;
@@ -37,6 +38,8 @@ public class Market {
         }
 
         requestRate -= changePlayerInfluence * Math.sqrt(amount) / 100;
+        
+        calculatedGain = Math.round(calculatedGain*100)/100;
         player.cash += calculatedGain;
         player.fish -= amount;
         return calculatedGain;

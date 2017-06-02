@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by Joachim on 01.04.2017.
- */
+
 public class FishPond {
     double population;
-    private final double targetPopulation;
-    private double growthFactor;
+    double targetPopulation;
+    double growthFactor;
 
     public FishPond(double startPopulation, double targetPopulation) {
         this(startPopulation,targetPopulation, 0.0005);
@@ -32,6 +30,8 @@ public class FishPond {
         }
 
         population -= amounts;
+        repopulate(1);
+        population = Math.round(population);
     }
 
     public void repopulate(double time){
@@ -41,6 +41,6 @@ public class FishPond {
         population = newPopulation;
     }
     public double getPopulation() {
-    	return population;
+      return population;
     }
 }
