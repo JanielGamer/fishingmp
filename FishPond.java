@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Created by Joachim on 01.04.2017.
- */
+
 public class FishPond {
     double population;
-    private final double targetPopulation;
-    private double growthFactor;
+    double targetPopulation;
+    double growthFactor;
 
     public FishPond(double startPopulation, double targetPopulation) {
         this(startPopulation,targetPopulation, 0.0005);
@@ -25,13 +23,20 @@ public class FishPond {
     public void fish(Map<Player, Double> percentages){
         double amounts = 0;
 
-        for (Map.Entry<Player, Double> playerPercentage:percentages.entrySet()             ) {
+        for (Map.Entry<Player, Double> playerPercentage:percentages.entrySet()) {
             double amount = population * playerPercentage.getValue();
+            amount = Math.round(amount);
             playerPercentage.getKey().fish += amount;
             amounts += amount;
         }
 
         population -= amounts;
+        repopulate(1);
+        population = Math.round(population);
+        
+        if (population<0) {
+        	population = 0;
+        }
     }
 
     public void repopulate(double time){
@@ -41,6 +46,6 @@ public class FishPond {
         population = newPopulation;
     }
     public double getPopulation() {
-    	return population;
+      return population;
     }
 }

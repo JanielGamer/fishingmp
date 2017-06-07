@@ -4,8 +4,14 @@ package main;
  */
 public enum PossibleActions {
     SELL,
+    SELLG,
     BUY,
+    BUYG,
     FISH,
     STATS,
+    SAY,
+    MINE,
+    PAUSE,
+    UNPAUSE,
     leave
 }
